@@ -2,37 +2,44 @@ import mysql.connector
 from flask import Flask
 from flask_cors import CORS
 import random
+import database
 
 
-try:
-    connection = mysql.connector.connect(
-        host="127.0.0.1",
-        port=3306,
-        database="flight_game",
-        user="user",
-        password="password",
-        autocommit=True,
-    )
-    # NOTE: cursor variable is set here too
-    cursor = connection.cursor()
+connection = mysql.connector.connect(
+    host="127.0.0.1",
+    port=3306,
+    database="flight_game",
+    user="user",
+    password="password",
+    autocommit=True,
+)
+# NOTE: cursor variable is set here too
+cursor = connection.cursor()
+database.modify_database(cursor)
+player_table = database.fetch_players(cursor)
+airports = database.fetch_airport(cursor)
 
-except mysql.connector.Error as err:
-    print(f"Error: {err}")
-    # Handle the error (database not live or doesn't exist)
+def fetch_countries():
+    sql = "SELECT name FROM country where continent = 'EU'"
+    cursor.execute(sql)
+    countrylist = []
+    countries = cursor.fetchall()
+    for country in countries:
+        countrylist.append(country)
+    return countrylist
+
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
-class Gamestate:
-    def __init__(self, username, CountriesVisited, co2_budget=10_000, co2_consumed=0, money=0, AirportCountry="FI", Location="EFHK"):
-        self.co2_budget = co2_budget
-        self.co2_consumed = co2_consumed
-        self.money = money
+
+
+class Airport:
+
+    def __init__(self, AirportCountry, Location):
         self.AirportCountry = AirportCountry
         self.Location = Location
-        self.CountriesVisited = CountriesVisited
-        self.username = username
 
     def get_airport_coordinates(self,icao):
         sql = "SELECT latitude_deg, longitude_deg FROM airport WHERE ident = %s"
@@ -59,16 +66,82 @@ class Gamestate:
         else:
             return None
 
+class Gamestate(Airport):
+    def __init__(self, username, CountriesVisited, EveryCountry, ShopsList, status = "active", co2_budget=10_000, co2_consumed=0, money=10_000, AirportCountry="FI", Location="EFHK"):
+        self.co2_budget = co2_budget
+        self.co2_consumed = co2_consumed
+        self.money = money
+        self.CountriesVisited = CountriesVisited
+        self.username = username
+        self.EveryCountry = EveryCountry
+        self.status = status
+        self.ShopsList = ShopsList
+        super().__init__(AirportCountry, Location)
 
-def fetch_countries():
-    sql = "SELECT name FROM country where continent = 'EU'"
-    cursor.execute(sql)
-    countrylist = []
-    countries = cursor.fetchall()
-    for country in countries:
-        countrylist.append(country)
-    return countrylist
 
 
-AllCountries = fetch_countries()
-game = Gamestate(username, [])
+    def name_to_table(cursor, name, co2_budget):
+        query = f"insert into game(screen_name, co2_budget,co2_consumed) values ('{name}',{co2_budget},0);"
+        cursor.execute(query)
+
+    def name_check(name, some_list) -> bool:
+        for i in some_list:
+            if i[4] == name:
+                return False
+        return True
+    def fetch_players(cursor):
+        cursor.execute("select * from game;")
+        highscore_list = cursor.fetchall()
+        # NOTE: debug print whole table
+        # print("DEBUG: game table start")
+        # print(highscore_list)
+        # print("DEBUG: game table end")
+        return highscore_list
+
+
+    def introduction_procedures(self):
+        query = f"insert into game(screen_name, co2_budget,co2_consumed) values ('{self.username}',{self.co2_budget},0);"
+        cursor.execute(query)
+        return player_table
+
+
+
+
+
+
+
+@app.route('/newgame/<playername>')
+def newgame(playername):
+    AllCountries = fetch_countries()
+    game = Gamestate(playername, [], AllCountries,[])
+    player_table = game.introduction_procedures()
+    return player_table
+
+@app.route('/flyrequest')
+def flyrequest():
+    json_data = {}
+    for i in range(10):
+        randomnum = random.randrange(0, len(airports))
+        airport_no = i + 1
+        json_data["Airport "+str(airport_no)] = airports[randomnum][0]
+    return json_data
+
+@app.route('/flyto/<icao_code>/<co2_consumed>')
+def flyto(icao_code,co2_consumed):
+    game.fly(icao_code)
+    json_data = fly(id, dest, consumption)
+    return json_data
+@app.route('/playerbought/<shoptype>/<shoprevenue>/<shopcost>')
+def playerbought(shoptype, shoprevenue, shopcost):
+    game.ShopsList.append([shoptype, int(shoprevenue)])
+    game.money = game.money - int(shopcost)
+    json_data = {"Player Money Balance" : game.money}
+    return json_data
+
+
+# Start new game
+# http://127.0.0.1:5000/newgame/pname
+
+
+if __name__ == '__main__':
+    app.run(use_reloader=True, host='127.0.0.1', port=5000)

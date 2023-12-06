@@ -61,8 +61,11 @@ end if
 
 
 def fetch_players(cursor) -> List[RowType]:
+    highscore_list={}
     cursor.execute("select * from game;")
-    highscore_list = cursor.fetchall()
+    highscorelist = cursor.fetchall()
+    for i in range(len(highscorelist)):
+        highscore_list[i] = highscorelist[i]
     # NOTE: debug print whole table
     # print("DEBUG: game table start")
     # print(highscore_list)
@@ -72,7 +75,7 @@ def fetch_players(cursor) -> List[RowType]:
 
 def fetch_airport(cursor) -> List[RowType]:
     cursor.execute(
-        "select name, latitude_deg, longitude_deg, ident from airport where type = 'large_airport';"
+        "select airport.name, airport.latitude_deg, airport.longitude_deg, airport.ident from airport, country where airport.iso_country = country.iso_country and airport.type = 'large_airport' and country.continent='EU';"
     )
     airports_list = cursor.fetchall()
     # NOTE: debug print whole table
