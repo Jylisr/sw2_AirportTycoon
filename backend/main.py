@@ -52,10 +52,10 @@ class Airport:
             print(f"Airport with ICAO code {icao} not found in the database.")
             return None
 
-    def calculate_distance_between_airports(self, target):
+    def calculate_distance_between_airports(self, Location, target):
         from geopy.distance import geodesic
 
-        coords1 = self.get_airport_coordinates(self.Location)
+        coords1 = self.get_airport_coordinates(Location)
         coords2 = self.get_airport_coordinates(target)
         if coords1 and coords2:
             # Create geodesic objects using the coordinates
@@ -79,6 +79,14 @@ class Gamestate(Airport):
         super().__init__(AirportCountry, Location)
 
 
+    def fly(self,target):
+        distance = super().calculate_distance_between_airports(target)
+        CO2_KG_USED_PER_KM_FLOWN = 0.133
+        co2_used = distance * CO2_KG_USED_PER_KM_FLOWN
+        self.co2_consumed = self.co2_consumed + co2_used
+        self.co2_budget = self.co2_budget + co2_used
+        self.Location = target
+        return co2_used
 
     def name_to_table(cursor, name, co2_budget):
         query = f"insert into game(screen_name, co2_budget,co2_consumed) values ('{name}',{co2_budget},0);"
@@ -105,18 +113,19 @@ class Gamestate(Airport):
         return player_table
 
 
+AllCountries = fetch_countries()
+game = Gamestate("", [], AllCountries,[])
 
 
-
-
-
+#Starts a new game which means it does all the start up procedures
+#and takes player's name as an input
 @app.route('/newgame/<playername>')
 def newgame(playername):
-    AllCountries = fetch_countries()
-    game = Gamestate(playername, [], AllCountries,[])
+    game.username=playername
     player_table = game.introduction_procedures()
     return player_table
 
+#Whenever a request to fly is sent a random set of 10 airports is returned
 @app.route('/flyrequest')
 def flyrequest():
     json_data = {}
@@ -126,11 +135,17 @@ def flyrequest():
         json_data["Airport "+str(airport_no)] = airports[randomnum][0]
     return json_data
 
-@app.route('/flyto/<icao_code>/<co2_consumed>')
-def flyto(icao_code,co2_consumed):
-    game.fly(icao_code)
-    json_data = fly(id, dest, consumption)
+#Everything to execute flying and returns co2 details and new location
+@app.route('/flyto/<icao_code>')
+def flyto(icao_code):
+    json_data={}
+    json_data["CO2 consumed"] = game.fly(icao_code)
+    json_data["CO2 Budget"] = game.co2_budget
+    json_data["CO2 Consumed"] = game.co2_consumed
+    json_data["Location"] = game.Location
     return json_data
+
+#executes the buying operations and returns the player's balance
 @app.route('/playerbought/<shoptype>/<shoprevenue>/<shopcost>')
 def playerbought(shoptype, shoprevenue, shopcost):
     game.ShopsList.append([shoptype, int(shoprevenue)])
