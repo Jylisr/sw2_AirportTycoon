@@ -3,7 +3,7 @@ from flask import Flask
 from flask_cors import CORS
 import random
 import database
-
+#External dependencies: mysql.connector, flask, flask_cors
 
 connection = mysql.connector.connect(
     host="127.0.0.1",
