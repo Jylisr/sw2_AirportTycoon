@@ -128,7 +128,7 @@ async function gameSetup(url) {
         popupContent.append(p);
         marker.bindPopup(popupContent);
         goButton.addEventListener('click', function () {
-          gameSetup(`${apiUrl}flyto?game=${gameData.status.id}&dest=${airport.ident}&consumption=${airport.co2_consumption}`);
+          gameSetup(`${apiUrl}flyto/${airport.ident}`);
         });
       }
     }
