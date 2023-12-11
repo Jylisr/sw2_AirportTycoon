@@ -102,9 +102,8 @@ async function gameSetup(url) {
   try {
     document.querySelector('.goal').classList.add('hide');
     airportMarkers.clearLayers();
-    const highscorelist = await getData('http://127.0.0.1:5000/highscore');
+    /*const highscorelist = await getData('http://127.0.0.1:5000/highscore');*/
     const gameData1 = await getData(url)
-    let gameData = await gameData1.json()
     if (gameData)
     {
       console.log("Somethings evidently wrong")
