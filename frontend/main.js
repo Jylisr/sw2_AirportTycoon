@@ -42,12 +42,8 @@ function updateStatus(status) {
 }
 
 // function to show weather at selected airport
-function showWeather(airport) {
-  document.querySelector('#airport-name').innerHTML = `Weather at ${airport.name}`;
-  document.querySelector('#airport-temp').innerHTML = `${airport.weather.temp}°C`;
-  document.querySelector('#weather-icon').src = airport.weather.icon;
-  document.querySelector('#airport-conditions').innerHTML = airport.weather.description;
-  document.querySelector('#airport-wind').innerHTML = `${airport.weather.wind.speed}m/s`;
+function showShops(airport) {
+
 }
 
 // function to check if any goals have been reached
@@ -99,8 +95,7 @@ async function gameSetup(url) {
   try {
     document.querySelector('.goal').classList.add('hide');
     airportMarkers.clearLayers();
-    const gameData = await getData(url);
-    console.log(gameData);
+    const highscorelist = await getData(url);
     updateStatus(gameData.status);
     if (!checkGameOver(gameData.status.co2.budget)) return;
     for (let airport of gameData.location) {
@@ -108,7 +103,7 @@ async function gameSetup(url) {
       airportMarkers.addLayer(marker);
       if (airport.active) {
         map.flyTo([airport.latitude, airport.longitude], 10);
-        showWeather(airport);
+        showShops(airport);
         checkGoals(airport.weather.meets_goals);
         marker.bindPopup(`You are here: <b>${airport.name}</b>`);
         marker.openPopup();

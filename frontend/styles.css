@@ -140,9 +140,41 @@ main {
   margin: 0.3rem;
 }
 
-.box img {
+
+.leader-board-box img {
   height: 3rem;
 }
+
+.leader-board-box {
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 10px;
+  margin-bottom: 1rem;
+}
+
+.leader-board-box h2,
+.leader-board-box figure {
+  margin: 0;
+  padding: 0;
+}
+
+.leader-board-box table {
+  width: 100%;
+  text-align: center;
+  border: var(--grey) solid 1px;
+  border-radius: 4px;
+}
+.leader-board-box li {
+  width: calc(100% - 0.6rem);
+  text-align: center;
+  border: var(--grey) solid 1px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding: 0.3rem;
+  margin: 0.3rem;
+}
+.leader-board-box img {
+  height: : 3rem;
+
 
 .goal {
   background-image: url('splatter.png');
