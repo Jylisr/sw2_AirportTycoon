@@ -106,6 +106,7 @@ async function gameSetup(url) {
       if (airport.active) {
         /*map.flyTo([airport.latitude, airport.longitude], 10); */
         showShops(airport);
+        const Shops = await getData()
         checkGoals(airport.weather.meets_goals);
         marker.bindPopup(`You are here: <b>${airport.name}</b>`);
         marker.openPopup();
