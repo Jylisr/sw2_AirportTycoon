@@ -23,7 +23,7 @@ document.querySelector('#player-form').addEventListener('submit', function (evt)
   evt.preventDefault();
   const playerName = document.querySelector('#player-input').value;
   document.querySelector('#player-modal').classList.add('hide');
-  gameSetup(`${apiUrl}newgame/${playerName}`);
+  gameSetup(`http://127.0.0.1:5000/newgame?name=?${playerName}`);
 });
 
 // function to fetch data from API

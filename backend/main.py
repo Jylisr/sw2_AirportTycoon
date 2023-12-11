@@ -1,5 +1,5 @@
 import mysql.connector
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
 import random
 import database
@@ -142,9 +142,12 @@ game = Gamestate("", [], AllCountries,[])
 
 #Starts a new game which means it does all the start up procedures
 #and takes player's name as an input
-@app.route('/newgame/<playername>')
-def newgame(playername):
-    game.username=playername
+# http://127.0.0.1:5000/newgame?name=?
+@app.route('/newgame')
+def newgame():
+    args = request.args
+    name = args.get("name")
+    game.username=name
     player_info = game.introduction_procedures()
     return player_info
 
@@ -174,8 +177,11 @@ def flyrequest():
     return json_data
 
 #Everything to execute flying and returns co2 details and new location
-@app.route('/flyto/<icao_code>')
-def flyto(icao_code):
+# http://127.0.0.1:5000/flyto?icao=?
+@app.route('/flyto')
+def flyto():
+    args = request.args
+    icao_code = args.get("icao")
     json_data={}
     json_data["CO2 consumed"] = game.fly(icao_code)
     json_data["CO2 Budget"] = game.co2_budget
@@ -192,8 +198,13 @@ def shoprequest():
     return json_data
 
 #executes the buying operations and returns the player's balance
-@app.route('/playerbought/<shoptype>/<shoprevenue>/<shopcost>')
-def playerbought(shoptype, shoprevenue, shopcost):
+# http://127.0.0.1:5000/playerbought?shoptype=?&shoprevenue&shopcost=?
+@app.route('/playerbought')
+def playerbought():
+    args = request.args
+    shoptype = args.get("shoptype")
+    shoprevenue = args.get("shoprevenue")
+    shopcost = args.get("shopcost")
     game.ShopsList.append([shoptype, int(shoprevenue)])
     game.money = game.money - int(shopcost)
     json_data = {"Player Money Balance" : game.money}
@@ -201,7 +212,7 @@ def playerbought(shoptype, shoprevenue, shopcost):
 
 
 # Start new game
-# http://127.0.0.1:5000/newgame/pname
+# http://127.0.0.1:5000/newgame?pname=
 
 
 if __name__ == '__main__':
