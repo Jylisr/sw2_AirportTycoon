@@ -116,6 +116,25 @@ class Gamestate(Airport):
         cursor.execute(query)
         return {self.username,self.co2_budget, self.co2_consumed,self.money}
 
+    def generate_random_shop(self):
+        num_shops = random.randint(1, 7)
+        shop_names = [
+            "Duty-Free Shop",
+            "Coffee House",
+            "Electronics Store",
+            "Bookstore",
+            "Gift Shop",
+            "Fashion Boutique",
+            "Restaurant",
+        ]
+        list_of_shops = []
+        for _ in range(num_shops):
+            name = random.choice(shop_names)
+            price = random.randint(1000, 8000)
+            revenue_per_month = random.randint(1000, 5000)
+            list_of_shops.append([name, price, revenue_per_month])
+        return list_of_shops
+
 
 AllCountries = fetch_countries()
 game = Gamestate("", [], AllCountries,[])
@@ -162,6 +181,14 @@ def flyto(icao_code):
     json_data["CO2 Budget"] = game.co2_budget
     json_data["CO2 Consumed"] = game.co2_consumed
     json_data["Location"] = game.Location
+    return json_data
+
+@app.route('/shoprequest')
+def shoprequest():
+    json_data = {}
+    list_of_shops = game.generate_random_shop()
+    for i in len(list_of_shops):
+        json_data["Shop"+str(i)] = list_of_shops[i]
     return json_data
 
 #executes the buying operations and returns the player's balance

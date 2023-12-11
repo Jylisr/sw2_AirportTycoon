@@ -37,13 +37,20 @@ async function getData(url) {
 // function to update game status
 function updateStatus(status) {
   document.querySelector('#player-name').innerHTML = `Player: ${status.name}`;
-  document.querySelector('#consumed').innerHTML = status.co2.consumed;
-  document.querySelector('#budget').innerHTML = status.co2.budget;
+  document.querySelector('#consumed').innerHTML = status.co2_consumed;
+  document.querySelector('#budget').innerHTML = status.co2_budget;
+  document.querySelector('#money').innerHTML = status.money;
 }
 
 // function to show weather at selected airport
-function showShops(airport) {
-
+function showShops(shops) {
+  for (shop of shops) {
+    document.querySelector('#consumed').innerHTML = `Weather at ${airport.name}`;
+  document.querySelector('#budget').innerHTML = `${airport.weather.temp}°C`;
+  document.querySelector('#money').src = airport.weather.icon;
+  document.querySelector('#player-name').innerHTML = airport.weather.description;
+  document.querySelector('#airport-wind').innerHTML = `${airport.weather.wind.speed}m/s`;
+  }
 }
 
 // function to check if any goals have been reached
@@ -97,6 +104,14 @@ async function gameSetup(url) {
     airportMarkers.clearLayers();
     const highscorelist = await getData('http://127.0.0.1:5000/highscore');
     const gameData = await getData(url)
+    if (gameData)
+    {
+      console.log(Somethings evidently wrong)
+    }
+    else
+    {
+      console.log(Somethings still evidently wrong)
+    }
     updateStatus(gameData.status);
     const Locations = await getData('http://127.0.0.1:5000/flyrequest')
     if (!checkGameOver(gameData.status.co2_budget, gameData.status.money)) return;
@@ -105,8 +120,8 @@ async function gameSetup(url) {
       airportMarkers.addLayer(marker);
       if (airport.active) {
         /*map.flyTo([airport.latitude, airport.longitude], 10); */
-        showShops(airport);
-        const Shops = await getData()
+        const Shops = await getData("http://127.0.0.1:5000/shoprequest")
+        showShops(Shops);
         checkGoals(airport.weather.meets_goals);
         marker.bindPopup(`You are here: <b>${airport.name}</b>`);
         marker.openPopup();
