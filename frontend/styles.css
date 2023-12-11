@@ -140,12 +140,13 @@ main {
   margin: 0.3rem;
 }
 
-
-.leader-board-box img {
+.box img {
   height: 3rem;
 }
 
 .leader-board-box {
+  padding: 1rem;
+  font-size: x-small;
   border-radius: 6px;
   box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 10px;
   margin-bottom: 1rem;
@@ -173,8 +174,8 @@ main {
   margin: 0.3rem;
 }
 .leader-board-box img {
-  height: : 3rem;
-
+  height: 3rem;
+}
 
 .goal {
   background-image: url('splatter.png');
