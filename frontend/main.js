@@ -44,7 +44,7 @@ function updateStatus(status) {
 
 // function to show weather at selected airport
 function showShops(shops) {
-  for (shop of shops) {
+  for (let shop of shops) {
     document.querySelector('#consumed').innerHTML = `Weather at ${airport.name}`;
   document.querySelector('#budget').innerHTML = `${airport.weather.temp}°C`;
   document.querySelector('#money').src = airport.weather.icon;
@@ -103,14 +103,15 @@ async function gameSetup(url) {
     document.querySelector('.goal').classList.add('hide');
     airportMarkers.clearLayers();
     const highscorelist = await getData('http://127.0.0.1:5000/highscore');
-    const gameData = await getData(url)
+    const gameData1 = await getData(url)
+    let gameData = await gameData1.json()
     if (gameData)
     {
-      console.log(Somethings evidently wrong)
+      console.log("Somethings evidently wrong")
     }
     else
     {
-      console.log(Somethings still evidently wrong)
+      console.log("Somethings still evidently wrong")
     }
     updateStatus(gameData.status);
     const Locations = await getData('http://127.0.0.1:5000/flyrequest')
