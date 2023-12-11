@@ -113,7 +113,7 @@ class Gamestate(Airport):
     def introduction_procedures(self):
         query = f"insert into game(screen_name, co2_budget,co2_consumed) values ('{self.username}',{self.co2_budget},0);"
         cursor.execute(query)
-        return {self.username,self.co2_budget,0}
+        return {self.username,self.co2_budget, self.co2_consumed,self.money}
 
 
 AllCountries = fetch_countries()
@@ -137,10 +137,20 @@ def highscore():
 @app.route('/flyrequest')
 def flyrequest():
     json_data = {}
-    for i in range(10):
-        randomnum = random.randrange(0, len(airports))
-        airport_no = i + 1
-        json_data["Airport "+str(airport_no)] = airports[randomnum][0]
+    i = 0
+    cursor.execute(
+        "select airport.name, airport.latitude_deg, airport.longitude_deg, country.name from airport, country where airport.iso_country = country.iso_country and airport.iso_country={game.Location};"
+    )
+    current_airport = cursor.fetchall()
+    for airport in current_airport:
+        data = {'name': airport[1], 'latitude': airport[2], 'longitude': airport[3], 'country': airport[4], 'active': True}
+        json_data['Airport' + str(i)] = data
+        i += 1
+    for airport in airports:
+        if airport[0] != game.Location:
+            data = {'name': airport[1], 'latitude': airport[2], 'longitude': airport[3], 'country': airport[4], 'active': False}
+            json_data['Airport'+str(i)] = data
+            i+=1
     return json_data
 
 #Everything to execute flying and returns co2 details and new location

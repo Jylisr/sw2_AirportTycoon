@@ -75,7 +75,7 @@ def fetch_players(cursor) -> List[RowType]:
 
 def fetch_airport(cursor) -> List[RowType]:
     cursor.execute(
-        "select airport.name, airport.latitude_deg, airport.longitude_deg, airport.ident from airport, country where airport.iso_country = country.iso_country and airport.type = 'large_airport' and country.continent='EU';"
+        "select airport.name, airport.latitude_deg, airport.longitude_deg, country.name from airport, country where airport.iso_country = country.iso_country and airport.type = 'large_airport' and country.continent='EU' order by rand( ) limit 8;"
     )
     airports_list = cursor.fetchall()
     # NOTE: debug print whole table

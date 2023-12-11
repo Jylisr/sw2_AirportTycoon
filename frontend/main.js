@@ -81,8 +81,8 @@ function updateGoals(goals) {
 }
 
 // function to check if game is over
-function checkGameOver(budget) {
-  if (budget <= 0) {
+function checkGameOver(budget, money) {
+  if (budget <= 0 || money <= 0){
     alert(`Game Over. ${globalGoals.length} goals reached.`);
     return false;
   }
@@ -96,13 +96,15 @@ async function gameSetup(url) {
     document.querySelector('.goal').classList.add('hide');
     airportMarkers.clearLayers();
     const highscorelist = await getData('http://127.0.0.1:5000/highscore');
+    const gameData = await getData(url)
     updateStatus(gameData.status);
-    if (!checkGameOver(gameData.status.co2.budget)) return;
-    for (let airport of gameData.location) {
+    const Locations = await getData('http://127.0.0.1:5000/flyrequest')
+    if (!checkGameOver(gameData.status.co2_budget, gameData.status.money)) return;
+    for (let airport of Locations) {
       const marker = L.marker([airport.latitude, airport.longitude]).addTo(map);
       airportMarkers.addLayer(marker);
       if (airport.active) {
-        map.flyTo([airport.latitude, airport.longitude], 10);
+        /*map.flyTo([airport.latitude, airport.longitude], 10); */
         showShops(airport);
         checkGoals(airport.weather.meets_goals);
         marker.bindPopup(`You are here: <b>${airport.name}</b>`);
