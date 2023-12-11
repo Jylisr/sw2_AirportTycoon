@@ -23,7 +23,7 @@ document.querySelector('#player-form').addEventListener('submit', function (evt)
   evt.preventDefault();
   const playerName = document.querySelector('#player-input').value;
   document.querySelector('#player-modal').classList.add('hide');
-  gameSetup(`http://127.0.0.1:5000/newgame?name=?${playerName}`);
+  gameSetup(`http://127.0.0.1:5000/newgame?name=${playerName}`);
 });
 
 // function to fetch data from API
@@ -53,17 +53,6 @@ function showShops(shops) {
   }
 }
 
-// function to check if any goals have been reached
-function checkGoals(meets_goals) {
-  if (meets_goals.length > 0) {
-    for (let goal of meets_goals) {
-      if (!globalGoals.includes(goal)) {
-        document.querySelector('.goal').classList.remove('hide');
-        location.href = '#goals';
-      }
-    }
-  }
-}
 
 // function to update goal data and goal table in UI
 function updateGoals(goals) {
@@ -103,7 +92,7 @@ async function gameSetup(url) {
     document.querySelector('.goal').classList.add('hide');
     airportMarkers.clearLayers();
     /*const highscorelist = await getData('http://127.0.0.1:5000/highscore');*/
-    const gameData1 = await getData(url)
+    const gameData = await getData(url)
     if (gameData)
     {
       console.log("Somethings evidently wrong")
@@ -113,13 +102,13 @@ async function gameSetup(url) {
       console.log("Somethings still evidently wrong")
     }
     updateStatus(gameData.status);
-    const Locations = await getData('http://127.0.0.1:5000/flyrequest')
+    /*const Locations = await getData('http://127.0.0.1:5000/flyrequest')
     if (!checkGameOver(gameData.status.co2_budget, gameData.status.money)) return;
     for (let airport of Locations) {
       const marker = L.marker([airport.latitude, airport.longitude]).addTo(map);
       airportMarkers.addLayer(marker);
       if (airport.active) {
-        /*map.flyTo([airport.latitude, airport.longitude], 10); */
+        map.flyTo([airport.latitude, airport.longitude], 10);
         const Shops = await getData("http://127.0.0.1:5000/shoprequest")
         showShops(Shops);
         checkGoals(airport.weather.meets_goals);
@@ -145,7 +134,7 @@ async function gameSetup(url) {
         });
       }
     }
-    updateGoals(gameData.goals);
+    updateGoals(gameData.goals);*/
   } catch (error) {
     console.log(error);
   }
