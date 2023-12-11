@@ -17,6 +17,9 @@ connection = mysql.connector.connect(
 cursor = connection.cursor()
 database.modify_database(cursor)
 player_table = database.fetch_players(cursor)
+playertable={}
+for i in player_table:
+    playertable[player_table[i][id]] = player_table[i]
 airports = database.fetch_airport(cursor)
 
 def fetch_countries():
@@ -110,7 +113,7 @@ class Gamestate(Airport):
     def introduction_procedures(self):
         query = f"insert into game(screen_name, co2_budget,co2_consumed) values ('{self.username}',{self.co2_budget},0);"
         cursor.execute(query)
-        return player_table
+        return {self.username,self.co2_budget,0}
 
 
 AllCountries = fetch_countries()
@@ -122,8 +125,13 @@ game = Gamestate("", [], AllCountries,[])
 @app.route('/newgame/<playername>')
 def newgame(playername):
     game.username=playername
-    player_table = game.introduction_procedures()
-    return player_table
+    player_info = game.introduction_procedures()
+    return player_info
+
+@app.route('/highscore')
+def highscore():
+    json_data=playertable
+    return json_data
 
 #Whenever a request to fly is sent a random set of 10 airports is returned
 @app.route('/flyrequest')

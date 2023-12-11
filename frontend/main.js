@@ -95,7 +95,7 @@ async function gameSetup(url) {
   try {
     document.querySelector('.goal').classList.add('hide');
     airportMarkers.clearLayers();
-    const highscorelist = await getData(url);
+    const highscorelist = await getData('http://127.0.0.1:5000/highscore');
     updateStatus(gameData.status);
     if (!checkGameOver(gameData.status.co2.budget)) return;
     for (let airport of gameData.location) {
