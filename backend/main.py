@@ -19,7 +19,8 @@ database.modify_database(cursor)
 player_table = database.fetch_players(cursor)
 playertable={}
 for i in player_table:
-    playertable[player_table[i][id]] = player_table[i]
+    playertable[player_table[i][0]] = player_table[i]
+    # The 0 in [player_table[i][0]] is = id
 airports = database.fetch_airport(cursor)
 
 def fetch_countries():
