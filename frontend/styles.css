@@ -56,7 +56,7 @@ body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   background-color: var(--white);
   scroll-behavior: smooth;
-  background-image: url('yourmom.jpg');
+  background-image: url('background.jpg');
 }
 
 .container {

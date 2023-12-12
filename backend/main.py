@@ -3,6 +3,7 @@ from flask import Flask, request
 from flask_cors import CORS
 import random
 import database
+import json
 #External dependencies: mysql.connector, flask, flask_cors
 
 connection = mysql.connector.connect(
