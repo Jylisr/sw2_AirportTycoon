@@ -88,13 +88,10 @@ class Gamestate(Airport):
         CO2_KG_USED_PER_KM_FLOWN = 0.133
         co2_used = distance * CO2_KG_USED_PER_KM_FLOWN
         self.co2_consumed = self.co2_consumed + co2_used
-        self.co2_budget = self.co2_budget + co2_used
+        self.co2_budget = self.co2_budget - co2_used
         self.Location = target
         return co2_used
 
-    def name_to_table(cursor, name, co2_budget):
-        query = f"insert into game(screen_name, co2_budget,co2_consumed) values ('{name}',{co2_budget},0);"
-        cursor.execute(query)
 
     def name_check(name, some_list) -> bool:
         for i in some_list:
