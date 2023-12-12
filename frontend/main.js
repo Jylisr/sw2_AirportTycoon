@@ -102,7 +102,7 @@ async function gameSetup(url) {
       console.log("Somethings still evidently wrong")
     }
     updateStatus(gameData.status);
-    /*const Locations = await getData('http://127.0.0.1:5000/flyrequest')
+    const Locations = await getData('http://127.0.0.1:5000/flyrequest')
     if (!checkGameOver(gameData.status.co2_budget, gameData.status.money)) return;
     for (let airport of Locations) {
       const marker = L.marker([airport.latitude, airport.longitude]).addTo(map);
@@ -111,7 +111,6 @@ async function gameSetup(url) {
         map.flyTo([airport.latitude, airport.longitude], 10);
         const Shops = await getData("http://127.0.0.1:5000/shoprequest")
         showShops(Shops);
-        checkGoals(airport.weather.meets_goals);
         marker.bindPopup(`You are here: <b>${airport.name}</b>`);
         marker.openPopup();
         marker.setIcon(greenIcon);
@@ -134,7 +133,7 @@ async function gameSetup(url) {
         });
       }
     }
-    updateGoals(gameData.goals);*/
+    updateGoals(gameData.goals);
   } catch (error) {
     console.log(error);
   }
