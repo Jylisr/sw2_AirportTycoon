@@ -200,21 +200,25 @@ main {
 #player-modal {
   width: 100vw;
   height: 100vh;
-  position: relative;
+  background-color: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  top: 0;
   z-index: 9999;
-
 }
 
 #player-form {
   display: flex;
-  width: 50%;
-  margin: 4rem auto;
+  width: 30%;
+  margin: 20rem auto;
   flex-direction: column;
+  text-align: center;
 }
 
 #player-form input {
   padding: 1rem;
+  font-family: pixel, Geneva, Tahoma, sans-serif;
 }
+
 
 .done {
   background-color: var(--grey);

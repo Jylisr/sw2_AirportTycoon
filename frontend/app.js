@@ -9,9 +9,7 @@ L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
 map.setView([60, 24], 7);
 
 // global variables
-const apiUrl = 'http://127.0.0.1:5000/';
 const startLoc = 'Helsinki Vantaa Airport';
-const airportsvisited = [];
 const airportMarkers = L.featureGroup().addTo(map);
 const co2perkm = 0.133
 const HtoR = 433 * co2perkm
@@ -26,28 +24,54 @@ const greenIcon = L.divIcon({ className: 'green-icon' });
 // form for player name
 document.querySelector('#player-form').addEventListener('submit', function (evt) {
   evt.preventDefault(); // player must enter name
-  const playerName = document.querySelector('#player-input').value;
+  console.log("form is supposed to show itself")
+  let playerName = document.querySelector('#player-input').value;
   document.querySelector('#player-modal').classList.add('hide'); // hide form after
-  //document.querySelector('#player-name').innerHTML = `Player: ${playerName}`;
+  document.querySelector('#player-name').innerHTML = `Player: ${playerName}`;
 });
+
+
+let playerName = document.querySelector('#player-name').innerHTML
+let str=""
+for (let i = 0; i < playerName.length; i++)
+{
+  str += playerName[i]
+  playerName = str
+}
+
 
 // function to update game status
 function updateStatus(player,consumed,budget,money) {
-  document.querySelector('#player-name').innerHTML = `Player : ${player}`;
   document.querySelector('#consumed').innerHTML = consumed.toFixed();
   document.querySelector('#budget').innerHTML = budget.toFixed();
   document.querySelector('#money').innerHTML = money;
 }
 
 // function to show weather at selected airport
-function showShops(shops) {
-  for (let shop of shops) {
-    document.querySelector('#consumed').innerHTML = `Weather at ${airport.name}`;
-  document.querySelector('#budget').innerHTML = `${airport.weather.temp}°C`;
-  document.querySelector('#money').src = airport.weather.icon;
-  document.querySelector('#player-name').innerHTML = airport.weather.description;
-  document.querySelector('#airport-wind').innerHTML = `${airport.weather.wind.speed}m/s`;
+function showShops() {
+      const shop_names = [
+        "Duty-Free Shop",
+        "Coffee House",
+        "Electronics Store",
+        "Bookstore",
+        "Gift Shop",
+        "Fashion Boutique",
+        "Restaurant",
+    ]
+  const num_shops = Math.floor(Math.random() * 9)
+  let shop_list = {}
+  for (let i = 0; i < num_shops; i++) {
+    const shop_choice = Math.floor(Math.random() * 8)
+    const shop_price = Math.floor((Math.random() * 8000) + 1000)
+    const shop_revenue = Math.floor((Math.random() * 5000) + 1000)
+    document.querySelector('#shop${i}').innerHTML = `${shop_names[shop_choice]}`;
+    shop_list[shop_choice] = [shop_price, shop_revenue]
   }
+  for (let i = 8 - num_shops; i < num_shops; i++)
+  {
+    document.querySelector('#shop'+ i.toString()).innerHTML = `No Shop yet :(`;
+  }
+  return shop_list
 }
 
 
@@ -64,8 +88,8 @@ function checkGameOver(budget, money) {
 function gameSetupl(Loc, consumption)
 {
   airportMarkers.clearLayers();
-  let Gamedata = ['Jyli', consumption, 10000-consumption, 10000];
-  updateStatus('Jyli', consumption, 10000-consumption, 10000);
+  let Gamedata = [playerName, consumption, 10000-consumption, 10000];
+  updateStatus(playerName, consumption, 10000-consumption, 10000);
   if (!checkGameOver(Gamedata[2],Gamedata[3]))
   {
     return this;
@@ -109,8 +133,8 @@ function gameSetupl(Loc, consumption)
 function gameSetupm(Loc, consumption)
 {
   airportMarkers.clearLayers();
-  let Gamedata = ['Jyli', consumption, 10000-consumption, 10000];
-  updateStatus('Jyli', consumption, 10000-consumption, 10000);
+  let Gamedata = [playerName, consumption, 10000-consumption, 10000];
+  updateStatus(playerName, consumption, 10000-consumption, 10000);
   if (!checkGameOver(Gamedata[2],Gamedata[3]))
   {
     return this;
@@ -154,8 +178,8 @@ function gameSetupm(Loc, consumption)
 function gameSetupr(Loc, consumption)
 {
   airportMarkers.clearLayers();
-  let Gamedata = ['Jyli', consumption, 10000-consumption, 10000];
-  updateStatus('Jyli', consumption, 10000-consumption, 10000);
+  let Gamedata = [playerName, consumption, 10000-consumption, 10000];
+  updateStatus(playerName, consumption, 10000-consumption, 10000);
   if (!checkGameOver(Gamedata[2],Gamedata[3]))
   {
     return this;
@@ -199,8 +223,9 @@ function gameSetupr(Loc, consumption)
 function gameSetuph(Loc, consumption)
 {
   airportMarkers.clearLayers();
-  let Gamedata = ['Jyli', consumption, 10000-consumption, 10000];
-  updateStatus('Jyli', consumption, 10000-consumption, 10000);
+  let Gamedata = [playerName, consumption, 10000-consumption, 10000];
+  updateStatus(playerName, consumption, 10000-consumption, 10000);
+  console.log("somethings wrong again")
   if (!checkGameOver(Gamedata[2],Gamedata[3]))
   {
     return this;
