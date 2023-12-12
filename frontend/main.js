@@ -19,12 +19,6 @@ const blueIcon = L.divIcon({ className: 'blue-icon' });
 const greenIcon = L.divIcon({ className: 'green-icon' });
 
 // form for player name
-document.querySelector('#player-form').addEventListener('submit', function (evt) {
-  evt.preventDefault();
-  const playerName = document.querySelector('#player-input').value;
-  document.querySelector('#player-modal').classList.add('hide');
-  gameSetup(`http://127.0.0.1:5000/newgame?name=${playerName}`);
-});
 
 // function to fetch data from API
 async function getData(url) {
@@ -138,6 +132,14 @@ async function gameSetup(url) {
     console.log(error);
   }
 }
+
+document.querySelector('#player-form').addEventListener('submit', function (evt) {
+  evt.preventDefault();
+  const playerName = document.querySelector('#player-input').value;
+  document.querySelector('#player-modal').classList.add('hide');
+  let url = `http://127.0.0.1:5000/newgame?name=${playerName}`
+  gameSetup(url);
+});
 
 // event listener to hide goal splash
 document.querySelector('.goal').addEventListener('click', function (evt) {
