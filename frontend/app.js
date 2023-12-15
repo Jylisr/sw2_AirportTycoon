@@ -133,8 +133,17 @@ function showShops() {
 
 // function to check if game is over
 function checkGameOver(budget, money) {
-  if (budget <= 0 || money <= 0){
-    alert(`Game Over. ${globalGoals.length} goals reached.`);
+  if (budget <= 0)
+  {
+    document.querySelector('#consumed').innerHTML = 10000
+    document.querySelector('#budget').innerHTML = 0
+    document.querySelector('#goal').classList.remove('hide');
+    console.log("Game over protocols accomplished")
+    return false;
+  }
+  else if (money <= 0){
+    document.querySelector('#money').innerHTML = money;
+    document.querySelector('#goal').classList.remove('hide');
     return false;
   }
   return true;
@@ -146,11 +155,11 @@ function gameSetupv(Loc, consumption, money)
   console.log(`Player is now in ${Loc}`)
   airportMarkers.clearLayers();
   let Gamedata = [playerName, consumption, 10000-consumption, money];
-  updateStatus(playerName, consumption, 10000-consumption, money);
   if (!checkGameOver(Gamedata[2],Gamedata[3]))
   {
     return this;
   }
+  updateStatus(playerName, consumption, 10000-consumption, money);
   let shops = showShops()
   let shop_price = Math.floor((Math.random() * 3000) + 1000);
   shop_supreme(shop_price,money)
@@ -200,11 +209,11 @@ function gameSetups(Loc, consumption, money)
   console.log(`Player is now in ${Loc}`)
   airportMarkers.clearLayers();
   let Gamedata = [playerName, consumption, 10000-consumption, money];
-  updateStatus(playerName, consumption, 10000-consumption, money);
   if (!checkGameOver(Gamedata[2],Gamedata[3]))
   {
     return this;
   }
+  updateStatus(playerName, consumption, 10000-consumption, money);
   let shops = showShops()
   let shop_price = Math.floor((Math.random() * 3000) + 1000);
   shop_supreme(shop_price,money)
@@ -252,11 +261,11 @@ function gameSetupa(Loc, consumption, money)
   console.log(`Player is now in ${Loc}`)
   airportMarkers.clearLayers();
   let Gamedata = [playerName, consumption, 10000-consumption, money];
-  updateStatus(playerName, consumption, 10000-consumption, money);
   if (!checkGameOver(Gamedata[2],Gamedata[3]))
   {
     return this;
   }
+  updateStatus(playerName, consumption, 10000-consumption, money);
   let shops = showShops()
   let shop_price = Math.floor((Math.random() * 3000) + 1000);
   shop_supreme(shop_price,money)
@@ -304,11 +313,11 @@ function gameSetupl(Loc, consumption, money)
   console.log(`Player is now in ${Loc}`)
   airportMarkers.clearLayers();
   let Gamedata = [playerName, consumption, 10000-consumption, money];
-  updateStatus(playerName, consumption, 10000-consumption, money);
   if (!checkGameOver(Gamedata[2],Gamedata[3]))
   {
     return this;
   }
+  updateStatus(playerName, consumption, 10000-consumption, money);
   let shops = showShops()
   let shop_price = Math.floor((Math.random() * 3000) + 1000);
   shop_supreme(shop_price,money)
@@ -356,11 +365,11 @@ function gameSetupm(Loc, consumption, money)
   console.log(`Player is now in ${Loc}`)
   airportMarkers.clearLayers();
   let Gamedata = [playerName, consumption, 10000-consumption, money];
-  updateStatus(playerName, consumption, 10000-consumption, money);
   if (!checkGameOver(Gamedata[2],Gamedata[3]))
   {
     return this;
   }
+  updateStatus(playerName, consumption, 10000-consumption, money);
   let shops = showShops()
   let shop_price = Math.floor((Math.random() * 3000) + 1000);
   shop_supreme(shop_price,money)
@@ -408,11 +417,11 @@ function gameSetupr(Loc, consumption, money)
   console.log(`Player is now in ${Loc}`)
   airportMarkers.clearLayers();
   let Gamedata = [playerName, consumption, 10000-consumption, money];
-  updateStatus(playerName, consumption, 10000-consumption, money);
   if (!checkGameOver(Gamedata[2],Gamedata[3]))
   {
     return this;
   }
+  updateStatus(playerName, consumption, 10000-consumption, money);
   let shops = showShops()
   let shop_price = Math.floor((Math.random() * 3000) + 1000);
   shop_supreme(shop_price,money)
@@ -461,11 +470,11 @@ function gameSetuph(Loc, consumption, money)
   console.log(`Player is now in ${Loc}`)
   airportMarkers.clearLayers();
   let Gamedata = [playerName, consumption, 10000-consumption, money];
-  updateStatus(playerName, consumption, 10000-consumption, money);
   if (!checkGameOver(Gamedata[2],Gamedata[3]))
   {
     return this;
   }
+  updateStatus(playerName, consumption, 10000-consumption, money);
   let shops = showShops()
   let shop_price = Math.floor((Math.random() * 3000) + 1000);
   shop_supreme(shop_price,money)

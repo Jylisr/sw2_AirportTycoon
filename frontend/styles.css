@@ -177,7 +177,7 @@ main {
   height: 3rem;
 }
 
-.goal {
+#goal {
   background-image: url('splatter.png');
   background-size: contain;
   background-repeat: no-repeat;
