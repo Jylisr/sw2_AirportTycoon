@@ -66,7 +66,9 @@
                 </section>
                 <section class="box">
                     <header>
-                        <h2 id = "airport-name">Shops/Airports</h2>
+                        <h2 id = "airport-name"><!--Shops--></h2>
+                        <button class="button-boolean" id="buybutton">Would you like to buy a shop?</button>
+
                     </header>
                     <ul id="goals" class="flex-wrap">
                         <li>
@@ -133,9 +135,18 @@
     </div>
 
     <div id="player-modal">
-        <form id="player-form">
+        <form id="player-form" autocomplete="off">
             <input id="player-input" type="text" placeholder="Player name" required>
             <input type="submit" value="Start game">
+        </form>
+    </div>
+    <div id="store-shope" class="hide">
+        <p id="store-shop"></p>
+    </div>
+    <div id="shop-modal" class="hide">
+        <form id="booming-business" autocomplete="off" >
+            <input id="shop-name" type="text" placeholder="Shop Name" required>
+            <input type="submit" value="Submit">
         </form>
     </div>
 

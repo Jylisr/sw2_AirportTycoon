@@ -205,8 +205,24 @@ main {
   top: 0;
   z-index: 9999;
 }
+#shop-modal {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  top: 0;
+  z-index: 9999;
+}
 
 #player-form {
+  display: flex;
+  width: 30%;
+  margin: 20rem auto;
+  flex-direction: column;
+  text-align: center;
+}
+
+#booming-business {
   display: flex;
   width: 30%;
   margin: 20rem auto;
@@ -219,6 +235,23 @@ main {
   font-family: pixel, Geneva, Tahoma, sans-serif;
 }
 
+#booming-business input {
+  padding: 1rem;
+  font-family: pixel, Geneva, Tahoma, sans-serif;
+}
+
+.box header {
+  display: flex;
+  gap: 16rem; /* 10 if we implement Shops title again */
+}
+.box button {
+  background-color: steelblue;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  text-align: center;
+}
 
 .done {
   background-color: var(--grey);
